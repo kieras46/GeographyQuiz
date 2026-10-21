@@ -1,6 +1,6 @@
 // Service worker – pozwala zainstalować grę na telefonie i grać offline.
 // Po zmianie plików gry podnieś numer wersji, żeby telefony pobrały nowe pliki.
-const VERSION = "v1";
+const VERSION = "v2";
 const APP_CACHE = "flagi-app-" + VERSION;
 const FLAG_CACHE = "flagi-flags"; // flagi się nie zmieniają, więc ten cache nie ma wersji
 

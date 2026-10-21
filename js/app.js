@@ -285,6 +285,8 @@
       streak: 0,
       bestStreak: 0,
       mistakes: [],
+      answeredCount: 0,
+      answered: false,
       limit: Number(settings.time)
     });
     show("game");
@@ -446,6 +448,7 @@
   const resolve = (ok, typed, timeout = false, pickedCode = null) => {
     if (game.answered) return;
     game.answered = true;
+    game.answeredCount++;
     clearInterval(game.timerId);
 
     const c = game.questions[game.index];
@@ -486,6 +489,8 @@
 
   const goNext = () => {
     if (!game.active || !game.answered) return;
+    clearTimeout(game.nextId);
+    if (game.index + 1 >= game.questions.length) return finishGame();
     game.index++;
     nextQuestion();
   };
@@ -507,7 +512,7 @@
   });
 
   const finishGame = () => {
-    game.answeredCount = game.index + (game.answered ? 1 : 0);
+    if (!game.active) return;
     stopGame();
 
     // Rekord
