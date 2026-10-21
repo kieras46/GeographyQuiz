@@ -2,10 +2,18 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Flagi i Stolice – quiz</title>
   <meta name="description" content="Quiz z flag i stolic państw świata / World flags and capitals quiz.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+  <meta name="theme-color" content="#0f1726">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Flagi">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,9 +28,17 @@
     </div>
   </header>
 
+  <div id="offline-badge" class="offline-badge" hidden></div>
+
   <main>
     <!-- ===== MENU ===== -->
     <section id="screen-menu" class="screen active">
+      <div id="install-banner" class="install-banner" hidden>
+        <span class="install-icon">📲</span>
+        <span id="install-text"></span>
+        <button id="btn-install" class="btn primary small" data-i18n="install" hidden></button>
+        <button id="btn-install-close" class="close" aria-label="×">×</button>
+      </div>
       <h1 data-i18n="chooseMode"></h1>
       <p class="muted" id="menu-summary"></p>
       <div class="modes">
@@ -139,6 +155,13 @@
           <button data-value="on" data-i18n="on"></button>
           <button data-value="off" data-i18n="off"></button>
         </div>
+      </div>
+
+      <div class="setting" id="offline-setting">
+        <label data-i18n="offline"></label>
+        <p class="hint" data-i18n="offlineHint"></p>
+        <button id="btn-offline" class="btn ghost" data-i18n="offlineDownload"></button>
+        <p class="hint" id="offline-status"></p>
       </div>
 
       <div class="game-actions">

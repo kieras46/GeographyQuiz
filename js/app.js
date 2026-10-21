@@ -69,6 +69,8 @@
     settings.lang = lang;
     saveSettings();
     applyStaticTexts();
+    renderInstall();
+    renderOffline();
     // Odśwież to, co aktualnie widać
     const active = $(".screen.active").id.replace("screen-", "");
     if (active === "menu") renderMenu();
@@ -553,7 +555,106 @@
 
   $("#btn-again").addEventListener("click", () => startGame(game.mode));
 
+  // ===================== APLIKACJA (PWA) =====================
+  const isStandalone = () =>
+    window.navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches;
+  const isIOS = () =>
+    /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  let installPrompt = null;
+
+  const renderInstall = () => {
+    const banner = $("#install-banner");
+    const dismissed = store.get("installDismissed", false);
+    const canPrompt = !!installPrompt;
+    const iosHint = isIOS() && !canPrompt;
+    banner.hidden = isStandalone() || dismissed || !(canPrompt || iosHint);
+    $("#btn-install").hidden = !canPrompt;
+    $("#install-text").innerHTML = canPrompt ? t("installText") : t("installIos");
+  };
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    installPrompt = e;
+    renderInstall();
+  });
+  window.addEventListener("appinstalled", () => {
+    installPrompt = null;
+    renderInstall();
+  });
+
+  $("#btn-install").addEventListener("click", async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    try { await installPrompt.userChoice; } catch { /* anulowano */ }
+    installPrompt = null;
+    renderInstall();
+  });
+  $("#btn-install-close").addEventListener("click", () => {
+    store.set("installDismissed", true);
+    renderInstall();
+  });
+
+  // Pobranie wszystkich flag do pamięci telefonu (tryb offline)
+  const FLAG_CACHE = "flagi-flags";
+  let downloading = false;
+
+  $("#btn-offline").addEventListener("click", async () => {
+    const status = $("#offline-status");
+    if (!("caches" in window)) { status.textContent = t("offlineUnsupported"); return; }
+    if (downloading) return;
+    downloading = true;
+    const btn = $("#btn-offline");
+    btn.disabled = true;
+
+    const urls = COUNTRIES.flatMap((c) => [flagUrl(c.code, 640), flagUrl(c.code, 160)]);
+    const total = urls.length;
+    let done = 0;
+    const cache = await caches.open(FLAG_CACHE);
+    const queue = urls.slice();
+
+    const worker = async () => {
+      while (queue.length) {
+        const url = queue.shift();
+        try {
+          if (!(await cache.match(url))) {
+            const res = await fetch(url, { mode: "cors" });
+            if (!res.ok) throw new Error(res.status);
+            await cache.put(url, res);
+          }
+          done++;
+        } catch { /* pominięto – spróbuj ponownie później */ }
+        status.textContent = t("offlineProgress", { done, total });
+      }
+    };
+    await Promise.all(Array.from({ length: 6 }, worker));
+
+    status.textContent = done === total ? t("offlineDone") : t("offlinePartial", { done, total });
+    store.set("flagsDownloaded", done === total);
+    btn.disabled = false;
+    downloading = false;
+  });
+
+  const renderOffline = () => {
+    if (!downloading) {
+      $("#offline-status").textContent = store.get("flagsDownloaded", false) ? t("offlineDone") : "";
+    }
+    $("#offline-badge").hidden = navigator.onLine;
+    $("#offline-badge").textContent = "📴 " + t("offlineNow");
+  };
+  window.addEventListener("online", renderOffline);
+  window.addEventListener("offline", renderOffline);
+
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => { /* np. otwarte z pliku */ });
+    });
+  }
+
   // Start
   applyStaticTexts();
+  renderInstall();
+  renderOffline();
   show("menu");
 })();

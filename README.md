@@ -25,6 +25,17 @@ Każdy tryb działa na dwa sposoby: **wybór z listy** (4 odpowiedzi) albo **wpi
 
 Ustawienia i rekordy zapisują się w przeglądarce (localStorage).
 
+## 📱 Na telefonie (aplikacja)
+
+Gra jest **PWA** – po wgraniu na GitHub Pages można ją zainstalować jak aplikację, z ikoną na ekranie i bez paska przeglądarki:
+
+- **iPhone / iPad:** otwórz link w **Safari** → stuknij **Udostępnij** (kwadrat ze strzałką) → **„Do ekranu początkowego”**.
+- **Android:** otwórz link w **Chrome** → przycisk **„Zainstaluj”** w grze albo menu ⋮ → **„Zainstaluj aplikację”**.
+
+Gra działa **offline** po pierwszym uruchomieniu. Flagi zapisują się w miarę grania, a w **Ustawieniach → Gra offline** można pobrać wszystkie od razu (ok. 5 MB).
+
+> Po zmianie plików gry podnieś `VERSION` w `sw.js` (np. `"v2"`), żeby zainstalowane aplikacje pobrały nowe pliki. Aktualizacja pojawia się przy kolejnym uruchomieniu.
+
 ## Punktacja
 
 100 pkt za poprawną odpowiedź + do 100 pkt premii za szybkość + premia za serię 🔥. Po grze widać listę pomyłek do powtórki.
@@ -60,6 +71,9 @@ css/style.css   – wygląd
 js/data.js      – lista państw i stolic (PL + EN) oraz regionów
 js/i18n.js      – teksty interfejsu po polsku i angielsku
 js/app.js       – logika gry
+sw.js           – tryb offline (service worker)
+manifest.webmanifest – dane aplikacji (nazwa, ikony)
+icons/          – ikony aplikacji
 ```
 
 Aby dodać lub poprawić państwo, edytuj `js/data.js`:
@@ -70,3 +84,5 @@ a angielską wersję w `COUNTRIES_EN` w tym samym pliku:
 ## English
 
 A simple browser quiz for learning world flags and capitals (195 countries). Three modes: Flag → Country, Capital → Country, Flag → Capital. Answer by multiple choice or by typing (both English and Polish names are accepted, small typos are forgiven). Time per answer: 10 s by default, changeable to 20 s, 30 s or 1 min in Settings. Switch the language with the PL/EN button in the top bar.
+
+**On your phone:** it is a PWA – open the GitHub Pages link and use *Share → Add to Home Screen* (iPhone, Safari) or *Install app* (Android, Chrome). It then runs full-screen and works offline; all flags can be downloaded in Settings → Offline play.

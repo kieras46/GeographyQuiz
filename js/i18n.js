@@ -64,7 +64,18 @@ window.I18N = {
     region_af: "Afryka",
     region_na: "Ameryka Płn. i Śr.",
     region_sa: "Ameryka Płd.",
-    region_oc: "Oceania"
+    region_oc: "Oceania",
+    install: "Zainstaluj",
+    installText: "Zainstaluj grę jako aplikację na telefonie",
+    installIos: "Na iPhonie: stuknij <b>Udostępnij</b> <span class=\"ios-share\">⬆︎</span>, a potem <b>„Do ekranu początkowego”</b>",
+    offline: "Gra offline",
+    offlineHint: "Gra działa bez internetu po pierwszym uruchomieniu. Flagi zapisują się w miarę grania – możesz też pobrać wszystkie od razu (ok. 5 MB).",
+    offlineDownload: "Pobierz wszystkie flagi",
+    offlineProgress: "Pobieranie… {done} / {total}",
+    offlineDone: "✔ Gotowe – wszystkie flagi są w telefonie.",
+    offlinePartial: "Pobrano {done} z {total}. Spróbuj ponownie przy lepszym połączeniu.",
+    offlineUnsupported: "Ta przeglądarka nie obsługuje trybu offline.",
+    offlineNow: "Brak internetu – grasz offline"
   },
   en: {
     appName: "Flags & Capitals",
@@ -129,6 +140,17 @@ window.I18N = {
     region_af: "Africa",
     region_na: "North & Central America",
     region_sa: "South America",
-    region_oc: "Oceania"
+    region_oc: "Oceania",
+    install: "Install",
+    installText: "Install the game as an app on your phone",
+    installIos: "On iPhone: tap <b>Share</b> <span class=\"ios-share\">⬆︎</span>, then <b>“Add to Home Screen”</b>",
+    offline: "Offline play",
+    offlineHint: "The game works without internet after the first launch. Flags are saved as you play – or download them all now (about 5 MB).",
+    offlineDownload: "Download all flags",
+    offlineProgress: "Downloading… {done} / {total}",
+    offlineDone: "✔ Done – all flags are saved on this device.",
+    offlinePartial: "Downloaded {done} of {total}. Try again on a better connection.",
+    offlineUnsupported: "This browser doesn't support offline mode.",
+    offlineNow: "No internet – playing offline"
   }
 };
