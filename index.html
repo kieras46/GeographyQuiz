@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flagi i Stolice – quiz</title>
+  <meta name="description" content="Quiz z flag i stolic państw świata / World flags and capitals quiz.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" data-go="menu" data-i18n-aria="mainMenu">🌍 <span data-i18n="appName">Flagi i Stolice</span></button>
+    <div class="top-actions">
+      <div class="lang-switch" role="group" aria-label="Język / Language">
+        <button data-lang="pl">PL</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="icon-btn" data-go="settings" data-i18n-aria="settings" data-i18n-title="settings">⚙️</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== MENU ===== -->
+    <section id="screen-menu" class="screen active">
+      <h1 data-i18n="chooseMode"></h1>
+      <p class="muted" id="menu-summary"></p>
+      <div class="modes">
+        <button class="mode-card" data-mode="flag-country">
+          <span class="mode-icon">🏳️</span>
+          <span class="mode-title" data-i18n="mode_flag-country"></span>
+          <span class="mode-desc" data-i18n="desc_flag-country"></span>
+        </button>
+        <button class="mode-card" data-mode="capital-country">
+          <span class="mode-icon">🏛️</span>
+          <span class="mode-title" data-i18n="mode_capital-country"></span>
+          <span class="mode-desc" data-i18n="desc_capital-country"></span>
+        </button>
+        <button class="mode-card" data-mode="flag-capital">
+          <span class="mode-icon">📍</span>
+          <span class="mode-title" data-i18n="mode_flag-capital"></span>
+          <span class="mode-desc" data-i18n="desc_flag-capital"></span>
+        </button>
+      </div>
+      <div class="best" id="best-scores"></div>
+    </section>
+
+    <!-- ===== GRA ===== -->
+    <section id="screen-game" class="screen">
+      <div class="hud">
+        <span id="hud-progress"></span>
+        <span id="hud-score"></span>
+        <span id="hud-streak"></span>
+      </div>
+      <div class="timer-bar"><div id="timer-fill"></div></div>
+      <div class="timer-text" id="timer-text"></div>
+
+      <div class="question">
+        <p class="prompt" id="prompt"></p>
+        <img id="q-flag" class="flag" alt="" hidden>
+        <p id="q-text" class="q-text" hidden></p>
+      </div>
+
+      <div id="answers-choice" class="choices"></div>
+
+      <form id="answers-type" class="type-form" autocomplete="off" hidden>
+        <input id="type-input" type="text" spellcheck="false">
+        <button type="submit" class="btn primary">OK</button>
+      </form>
+
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+      <div class="game-actions">
+        <button id="btn-next" class="btn primary" hidden></button>
+        <button id="btn-quit" class="btn ghost" data-i18n="quit"></button>
+      </div>
+    </section>
+
+    <!-- ===== WYNIK ===== -->
+    <section id="screen-result" class="screen">
+      <h1 data-i18n="gameOver"></h1>
+      <div class="result-big" id="result-big"></div>
+      <p class="muted" id="result-detail"></p>
+      <div class="game-actions">
+        <button id="btn-again" class="btn primary" data-i18n="playAgain"></button>
+        <button class="btn ghost" data-go="menu" data-i18n="menu"></button>
+      </div>
+      <h2 id="mistakes-title" data-i18n="review"></h2>
+      <ul id="mistakes" class="mistakes"></ul>
+    </section>
+
+    <!-- ===== USTAWIENIA ===== -->
+    <section id="screen-settings" class="screen">
+      <h1 data-i18n="settings"></h1>
+
+      <div class="setting">
+        <label data-i18n="language"></label>
+        <div class="seg" data-setting="lang">
+          <button data-value="pl">🇵🇱 Polski</button>
+          <button data-value="en">🇬🇧 English</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label data-i18n="timeLimit"></label>
+        <div class="seg" data-setting="time">
+          <button data-value="10">10 s</button>
+          <button data-value="20">20 s</button>
+          <button data-value="30">30 s</button>
+          <button data-value="60">1 min</button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label data-i18n="answerMode"></label>
+        <div class="seg" data-setting="answerMode">
+          <button data-value="choice" data-i18n="choice"></button>
+          <button data-value="type" data-i18n="typing"></button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label data-i18n="questionCount"></label>
+        <div class="seg" data-setting="count">
+          <button data-value="10">10</button>
+          <button data-value="20">20</button>
+          <button data-value="50">50</button>
+          <button data-value="0" data-i18n="all"></button>
+        </div>
+      </div>
+
+      <div class="setting">
+        <label data-i18n="regions"></label>
+        <div class="checks" id="region-checks"></div>
+      </div>
+
+      <div class="setting">
+        <label data-i18n="sounds"></label>
+        <div class="seg" data-setting="sound">
+          <button data-value="on" data-i18n="on"></button>
+          <button data-value="off" data-i18n="off"></button>
+        </div>
+      </div>
+
+      <div class="game-actions">
+        <button class="btn primary" data-go="menu" data-i18n="saveBack"></button>
+        <button id="btn-reset" class="btn ghost" data-i18n="resetRecords"></button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot"><span data-i18n="flagsFrom"></span> <a href="https://flagcdn.com" target="_blank" rel="noopener">flagcdn.com</a></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
